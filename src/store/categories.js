@@ -1,6 +1,6 @@
 const initialState = {
   
-  categories: [{ name: 'Electronics', description: 'Different categore of  electronic devices' }, { name: 'Food', description: ' all kinds of foods that you desire' }],
+  categories: [{ name: 'Electronics', description: 'Here you can find a variety of our electronic devices' }, { name: 'Food', description: 'Here you can find all kinds of foods you desire' }],
   activeCategory: {},
 }
 
@@ -12,7 +12,7 @@ export default function categoriesReducer(state = initialState, action) {
     case 'CHANGE_ACTIVE':
       let modified = {};
 
-      state.categories.map(item => {
+      state.categories.forEach(item => {
         if (item.name === payload) {
           modified = item;
         }
