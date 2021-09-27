@@ -31,10 +31,11 @@ export default function Footer() {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           </IconButton>
           <Typography variant="h6" className={classes.title} style={{textAlign:'center'}}>
-            &copy; Qusai Qeisi 2021  
+            &copy; MAX STORE 2021  
             <br/>
-            Contacts Us at: support@qusaiqeisi.com
+            Contacts Us at: support@maxstore.com
           </Typography>
+         
         </Toolbar>
       </AppBar>
     </div>
