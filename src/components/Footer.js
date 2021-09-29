@@ -1,45 +1,32 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import blueGrey from '@material-ui/core/colors/blueGrey';
+import { Typography, makeStyles  } from '@material-ui/core/';
 
-const primary = blueGrey[700];
+const ss= {
+      color: 'black',
+      backgroundColor: 'whitesmoke',
+    //   padding: theme.spacing(5),
+    padding:'5%'
+    };
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+function Footer(){
+
+return (
+
+    <>
 
 
-export default function Footer() {
-  const classes = useStyles();
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static" color={primary}>
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-          </IconButton>
-          <Typography variant="h6" className={classes.title} style={{textAlign:'center'}}>
-            &copy; MAX STORE 2021  
-            <br/>
-            Contacts Us at: support@maxstore.com
-          </Typography>
-         
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+      <footer style={ss}>
+
+      <Typography variant="h6" color="inherit" align="center" gutterBottom>
+      &copy; 2021 Javascript 401
+        </Typography>
+
+      </footer>
+
+    </>
+)
+
+
 }
 
-
+export default Footer

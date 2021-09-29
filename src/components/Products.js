@@ -1,76 +1,80 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import { connect } from 'react-redux';
-import { getCategoryItems } from '../store/products';
-import { addToCart } from '../store/cart';
-import {reduceInventory} from '../store/products';
+import {active , increment, getRemotData ,updateRemotData } from '../store/action'
+import { connect } from 'react-redux'
+import React ,{useEffect}from 'react'
+import {AppBar,Card,Container ,Link,makeStyles,Grid,Box,Button} from '@material-ui/core/';
+const api='https://api-server-0.herokuapp.com/products';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 200,
-  },
-  media: {
-    height: 140,
-  },
-});
 
-function Products(props) {
-  const classes = useStyles();
+function Product (props){
 
-  function handleClick(element) {
-    props.addToCart(element);
-    props.reduceInventory(element);
-    props.getCategoryItems(props.category.name);
-  }
+    useEffect(()=>{
+        props.getRemotData(api)
+    } , [])
+    
+    // return(
+        //     <>
+        //     <h1>hhhg</h1>
+        //     </>
+        // )
+        console.log(props.productProps.initialState,'+++++++++++++++');
+        if(props.productProps.initialState){
+            return(
+                <> 
 
-  return (
-    <>
-      {props.products.activeProducts.map((element, idx) => {
-        return <Card className={classes.root} key={idx} style={{ display: 'inline-block', marginLeft: '25%', height: '5%', width: '20%', marginTop: '3%', marginBottom: '2%'}}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image={element.image}
-              title={element.name}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {element.name} - ${element.price}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {element.description}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary" onClick={()=>{handleClick(element)}}>
-              Add To Cart
-            </Button>
-          </CardActions>
-        </Card>
-      })}
+        <Container style={{ background: 'whitesmoke' }} >
+            <Grid  container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            {props.productProps.initialState.map((e,idx)=>{
+            // console.log(props,'from product');
+                return(
+                <>
 
-    </>
-  )
+                <Card key={idx} style={{ margin: '3%' }}>
+
+                <Grid  spacing={4}  item xs={6} >
+                    <img src={e.image} alt={e.name} width='300px'></img>
+                    <h1>{e.name}</h1>
+                                <Grid
+                                container
+                                direction="row"
+                                justify="space-between"
+                                alignItems="center"
+                                Spacing={12}
+                                >
+                                <Button 
+                                onClick={()=>{props.updateRemotData(api,e)
+                                    // console.log(props.increment(),e.inStock,'after product')
+                                }}
+                                    >
+                                ADD TO CARD
+                                </Button>
+                                <p variant="h6">
+                                DETAILS</p>
+                                </Grid>
+                                <p>In Stock {e.inventory}</p>
+                </Grid>
+                </Card> 
+            </>
+            )
+            })}
+            </Grid>
+            </Container >            
+         </>
+    )}else{
+        return(
+            <>
+        <h1>Choose Category</h1>
+        </>
+        )
+    }
 }
-function mapStateToProps(state) {
-  return {
-    category: state.categories.activeCategory,
-    products: state.products,
-    cartProducts: state.cart
-  };
-}
-const mapDispatchToProps = {
-  getCategoryItems,
-  addToCart,
-  reduceInventory
-}
+// 1- add the state to this component props
+const mapStateToProps=state=>({
+    // product:state.products, /// state.reducer name in combineReducer
 
-export default connect(mapStateToProps, mapDispatchToProps)(Products)
+    productProps:state.products
+})
+// 2- since I have some actions to use: 
+// add the actions to the component props
+const mapDispatch={active , increment ,getRemotData ,updateRemotData}
+//3. connect your component and export it after its connected to redux store
+export default connect(mapStateToProps , mapDispatch)(Product)// export default Product;

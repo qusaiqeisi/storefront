@@ -1,40 +1,57 @@
-import React from 'react';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-import { connect } from 'react-redux';
-import { changeActive } from '../store/categories';
-import { getCategoryItems } from '../store/products';
-import { useEffect } from 'react';
+import React from 'react' 
+import {connect} from 'react-redux'
+import {active} from '../store/action'
+import {Grid, Button ,Typography} from '@material-ui/core'
 
-function Categories(props) {
 
-  useEffect(() => {
-    props.changeActive("Electronics");
-  }, [])
 
-  return (
-    <>
-      <Breadcrumbs aria-label="breadcrumb" style={{ marginLeft: '43%', fontSize: '25px' }}>
-        {props.categories.map((element, idx) => {
-
-          return <Link color="inherit" key={idx} onClick={() => { props.changeActive(element.name) }}>
-            {element.name}
-          </Link>
+function Category(props){
+    
+    console.log(props,'()()())');
+// return(
+        //     <>
+        //     <h1>hhhg</h1>
+        //     </>
+        // )
+    // if (props.Category) {
+    return(
+        <>
+       { props.Category.map((e,idx)=>{
+           return(
+            <Button key={idx}  
+            variant="outlined"
+            color="primary" 
+            onClick={()=>props.active(e.name)} >
+                {e.display_name}                  
+            </Button>
+           )
         })}
-      </Breadcrumbs>
-      <div style={{ marginLeft: '45%', fontSize: '50px', marginTop: '5%' }}>{props.activeCategory.name}</div>
-      <div style={{ marginLeft: '35%', fontSize: '25px', marginTop: '2%', color: 'GrayText' }}>{props.activeCategory.description}</div>
-    </>
-  )
+       </>
+        )
+    // }else{
+    //     console.log(props.x.payload,"2222222222222222");
+    //     return(
+    //         <>
+    //         <Button   
+    //         // variant="outlined"
+    //         color="primary" 
+    //         // onClick={()=>props.active(props.x.payload)}
+    //          >
+    //             {props.x.payload}                  
+    //         </Button>
+    //         </>
+    //     )
+    // }
 }
 
-const mapStateToProps = (state) => {
-  return state.categories;
-}
 
-const mapDispatchToProps = {
-  changeActive,
-  getCategoryItems
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Categories);
+// 1- add the state to this component props
+const mapStateToProps = state => ({
+    Category:state.categories.categories,
+    // x: state.categories.categories
+});
+// 2- since I have some actions to use: 
+// add the actions to the component props
+const mapDispatch = {active}
+//3. connect your component and export it after its connected to redux store
+export default connect(mapStateToProps,mapDispatch)(Category)// export default Category;

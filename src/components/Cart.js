@@ -1,63 +1,54 @@
-import { connect } from 'react-redux';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
-
-
-function Cart(props) {
-
-  const classes = useStyles();
-
-  function handleList() {
-
-    let temp = [];
-
-    props.cart.map((element) => {
-      if (temp.includes(element)) {
-        temp.forEach(item => {
-          if (item.name === element.name) {
-            item.inCart += 1;
-          }
-        })
-      } else {
-        element.inCart = 1;
-        temp.push(element)
-      }
-    })
-
-    let list = temp.map((element, idx) => {
-      return (<ListItem key={idx} button>
-        <ListItemText primary={`${element.name} - Quantity: ${element.inCart}`} />
-      </ListItem>)
-    })
-    return list;
-  }
-  return (
-    <div className={classes.root}>
-      <List component="nav" aria-label="secondary mailbox folders" style={{ zIndex: '3', position: 'absolute', right: '1%' }}>
-        {handleList()}
-      </List>
-    </div>
-  )
+import React from 'react' 
+import {connect} from 'react-redux'
+import {increment ,decrement} from '../store/action'
+import {Grid, Typography,Button,List ,ListItem ,Card} from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete';
+function Category(props){
+    console.log(props.cartProd,'===========',props.test);
+    // return(<h1>ggg</h1>)
+    // console.log(props);
+if (props.show) {
+    return(
+        <>
+        <List >
+            <Card style={{background:'whitesmoke', width:'300px', right: '50%'}}>
+        { props.cartProd.map((e,idx)=>{
+           return(
+            <ListItem  key={idx} >
+                    <Typography >
+                        {e} <Button onClick={()=>props.decrement(e)}>
+                                <DeleteIcon
+                                color="secondary"
+                                style={{
+                                    cursor: 'pointer',
+                                    paddingTop: '5px',
+                                }}></DeleteIcon>
+                            </Button>  
+                    </Typography>
+            </ListItem >
+           )
+        })}
+            </Card>  
+        </List >
+       </>
+        )
+}else{
+    return(<>{null}</>)
+}
 }
 
-function mapStateToProps(state) {
-  return state;
-}
 
-export default connect(mapStateToProps)(Cart);
+// 1- add the state to this component props
+const mapStateToProps = state => ({
+    cartProd: state.cart.display,
+    count:state.cart.count,
+    show: state.cart.show,
+    test:state
+});
 
 
-
+// 2- since I have some actions to use: 
+// add the actions to the component props
+const mapDispatch = {increment ,decrement}
+//3. connect your component and export it after its connected to redux store
+export default connect(mapStateToProps,mapDispatch)(Category)// export default Category;
